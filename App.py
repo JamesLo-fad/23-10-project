@@ -11,7 +11,20 @@ app = Flask(__name__)
 @app.route("/information/")
 def information():
 
-    driver = webdriver.Firefox(executable_path=os.getcwd() + "/geckodriver.exe")
+    from selenium.webdriver.firefox.options import Options
+    from webdriver_manager.firefox import GeckoDriverManager
+    from selenium.webdriver.firefox.service import Service
+
+    firefox_options = Options()
+    firefox_options.add_argument("--headless")
+
+    s = Service(GeckoDriverManager().install())
+    driver = webdriver.Firefox(
+        service=s,
+        options=firefox_options
+    )
+
+
     driver.get("https://www.bloomberg.com/graphics/global-trade-indicators/")
 
     all_data = []
